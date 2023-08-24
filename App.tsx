@@ -2,25 +2,15 @@ import React, {useState} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 
 function App(): React.JSX.Element {
-  const [name, setName] = useState('Mash');
-  const [session, setSession] = useState({number: 6, title: 'state'});
-  const [current, setCurrent] = useState(true);
-
+  const [count, setCount] = useState(0);
   const onClickHandler = () => {
-    setName('Programming with Venkatesh');
-    setSession({number: 7, title: 'Style'});
-    setCurrent(false);
+    setCount(prev => prev + 1);
   };
   return (
     <View style={styles.body}>
-      <Text style={styles.text}>{name}</Text>
-      <Text style={styles.text}>
-        This is session number {session.number} and about {session.title}
-      </Text>
-      <Text style={styles.text}>
-        {current ? 'current session' : 'next session'}
-      </Text>
-      <Button title="Update State" onPress={onClickHandler} />
+      <Text style={styles.text}>{count * 5}</Text>
+      <Text style={styles.text}>You Clicked {count} times</Text>
+      <Button title="click" onPress={onClickHandler} />
     </View>
   );
 }
