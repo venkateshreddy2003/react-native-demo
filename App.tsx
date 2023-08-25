@@ -4,76 +4,81 @@ import {
   StyleSheet,
   View,
   Text,
-  ScrollView,
-  RefreshControl,
-  FlatList,
-  SectionList,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 
 const App = () => {
-  const [Sections, setSections] = useState([
-    {
-      title: 'Title 1',
-      data: ['Item 1-1', 'Item 1-2'],
-    },
-  ]);
-  const onRefresh = () => {
-    setRefreshing(true);
-    const adding_index = Sections.length + 1;
-    setSections([
-      ...Sections,
-      {
-        title: 'Title ' + adding_index,
-        data: ['Item ' + adding_index + '-1', 'Item ' + adding_index + '-2'],
-      },
-    ]);
-    setRefreshing(false);
+  const [name, SetName] = useState('');
+  const [submitted, SetSubmitted] = useState(false);
+  const onPressHandler = () => {
+    SetSubmitted(!submitted);
   };
-  const [Refreshing, setRefreshing] = useState(false);
 
   return (
-    <SectionList
-      keyExtractor={(item, index) => index.toString()}
-      sections={Sections}
-      renderItem={({item}) => (
-        <View style={styles.item}>
-          <Text style={styles.text_item}>{item}</Text>
+    <View style={styles.body}>
+      <Text style={styles.text}>Please write your name:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="e.g. John"
+        onChangeText={value => SetName(value)}
+      />
+      {/* <Button
+        title={submitted ? 'Clear' : 'Submit'}
+        onPress={onPressHandler}
+        color='#00f'
+      /> */}
+      {/* <TouchableWithoutFeedback onPress={onPressHandler}>
+        <View style={styles.button}>
+          <Text style={styles.text}>{submitted ? 'Clear' : 'Submit'}</Text>
         </View>
-      )}
-      renderSectionHeader={({section}) => (
-        <View style={styles.header}>
-          <Text style={styles.text_header}>{section.title}</Text>
-        </View>
-      )}
-      refreshControl={
-        <RefreshControl refreshing={Refreshing} onRefresh={onRefresh} />
-      }
-    />
+      </TouchableWithoutFeedback> */}
+      <Pressable
+        onPress={onPressHandler}
+        hitSlop={{top: 10, bottom: 20, right: 10, left: 10}}
+        android_ripple={{color: '#00f'}}
+        style={({pressed}) => [
+          {backgroundColor: pressed ? '#dddddd' : '#00ff00'},
+          styles.button,
+        ]}>
+        <Text style={styles.text}>{submitted ? 'Clear' : 'Submit'}</Text>
+      </Pressable>
+      {submitted ? (
+        <Text style={styles.text}>You are registered as {name}</Text>
+      ) : null}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: '#4ae1fa',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-  },
-  item: {
-    borderBottomWidth: 1,
-    justifyContent: 'center',
+  body: {
+    flex: 1,
+    backgroundColor: '#ffffff',
     alignItems: 'center',
   },
-  text_header: {
+  text: {
     color: '#000000',
-    fontSize: 45,
-    fontStyle: 'italic',
+    fontSize: 20,
     margin: 10,
   },
-  text_item: {
-    color: '#000000',
-    fontSize: 35,
-    margin: 5,
+  input: {
+    width: 200,
+    borderWidth: 1,
+    borderColor: '#555',
+    borderRadius: 5,
+    textAlign: 'center',
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  button: {
+    width: 150,
+    height: 50,
+    alignItems: 'center',
+    backgroundColor: '#ff0',
   },
 });
 
