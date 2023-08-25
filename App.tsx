@@ -10,13 +10,44 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback,
   Pressable,
+  Alert,
+  ToastAndroid,
+  Keyboard,
 } from 'react-native';
 
 const App = () => {
   const [name, SetName] = useState('');
   const [submitted, SetSubmitted] = useState(false);
   const onPressHandler = () => {
-    SetSubmitted(!submitted);
+    if (name.length > 3) {
+      SetSubmitted(!submitted);
+      Keyboard.dismiss();
+      ToastAndroid.showWithGravity(
+        'good name',
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+      );
+    } else {
+      Alert.alert(
+        'warning',
+        'Name must be more than 3 characters',
+        [
+          {
+            text: 'ok',
+            onPress: () => {
+              console.log('ok pressed');
+            },
+            style: 'cancel',
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () => {
+            console.log('dismiss');
+          },
+        },
+      );
+    }
   };
 
   return (
